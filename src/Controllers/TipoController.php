@@ -6,25 +6,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 use App\Models\Entity\Tipo;
 
+require_once 'Base.php';
+
 /**
- * Controller v1 de livros
+ * Controller Tipo
  */
-class TipoController {
+class TipoController extends Base {
 
-    /**
-     * Container Class
-     * @var [object]
-     */
-    private $container;
-
-    /**
-     * Undocumented function
-     * @param [object] $container
-     */
-    public function __construct($container) {
-        $this->container = $container;
-    }
-    
     /**
      * Listagem de Tipos
      * @param [type] $request
@@ -32,7 +20,7 @@ class TipoController {
      * @param [type] $args
      * @return Response
      */
-    public function listTipo($request, $response, $args) {
+    public function list($request, $response, $args) {
         $entityManager = $this->container->get('em');
         $tiposRepository = $entityManager->getRepository('App\Models\Entity\Tipo');
         $tipos = $tiposRepository->findAll();
@@ -48,7 +36,7 @@ class TipoController {
      * @param [type] $args
      * @return Response
      */
-    public function createTipo($request, $response, $args) {
+    public function create($request, $response, $args) {
         $params = (object) $request->getParams();
         /**
          * Pega o Entity Manager do nosso Container
@@ -83,7 +71,7 @@ class TipoController {
      * @param [type] $args
      * @return Response
      */
-    public function viewTipo($request, $response, $args) {
+    public function view($request, $response, $args) {
 
         $id = (int) $args['id'];
 
@@ -112,7 +100,7 @@ class TipoController {
      * @param [type] $args
      * @return Response
      */
-    public function updateTipo($request, $response, $args) {
+    public function update($request, $response, $args) {
 
         $id = (int) $args['id'];
 
@@ -155,7 +143,7 @@ class TipoController {
      * @param [type] $args
      * @return Response
      */
-    public function deleteBook($request, $response, $args) {
+    public function delete($request, $response, $args) {
 
         $id = (int) $args['id'];
 
