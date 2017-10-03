@@ -1,13 +1,13 @@
 <?php
 
-
+namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Jogo
  *
- * @ORM\Table(name="jogo", indexes={@ORM\Index(name="fase_id", columns={"fase_id"}), @ORM\Index(name="time_1", columns={"time_1"}), @ORM\Index(name="time_2", columns={"time_2"}), @ORM\Index(name="situacao_id", columns={"situacao_id"})})
+ * @ORM\Table(name="cg_jogo", indexes={@ORM\Index(name="fase_id", columns={"fase_id"}), @ORM\Index(name="time_1", columns={"time_1"}), @ORM\Index(name="time_2", columns={"time_2"}), @ORM\Index(name="situacao_id", columns={"situacao_id"})})
  * @ORM\Entity
  */
 class Jogo
@@ -321,6 +321,10 @@ class Jogo
     public function getSituacao()
     {
         return $this->situacao;
+    }
+
+    public function getValues() {
+        return get_object_vars($this);
     }
 }
 

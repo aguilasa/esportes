@@ -1,13 +1,13 @@
 <?php
 
-
+namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Tipo
  *
- * @ORM\Table(name="tipo")
+ * @ORM\Table(name="cg_tipo")
  * @ORM\Entity
  */
 class Tipo
@@ -19,14 +19,14 @@ class Tipo
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nome", type="string", length=30, nullable=true)
      */
-    private $nome;
+    public $nome;
 
 
     /**
@@ -62,5 +62,9 @@ class Tipo
     {
         return $this->nome;
     }
-}
 
+    public function getValues()
+    {
+        return get_object_vars($this);
+    }
+}

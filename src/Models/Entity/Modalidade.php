@@ -1,13 +1,13 @@
 <?php
 
-
+namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Modalidade
  *
- * @ORM\Table(name="modalidade")
+ * @ORM\Table(name="cg_modalidade")
  * @ORM\Entity
  */
 class Modalidade
@@ -61,6 +61,10 @@ class Modalidade
     public function getNome()
     {
         return $this->nome;
+    }
+
+    public function getValues() {
+        return get_object_vars($this);
     }
 }
 

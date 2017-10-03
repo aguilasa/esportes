@@ -1,13 +1,13 @@
 <?php
 
-
+namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Fase
  *
- * @ORM\Table(name="fase", indexes={@ORM\Index(name="modalidade_id", columns={"modalidade_id"}), @ORM\Index(name="tipo_id", columns={"tipo_id"})})
+ * @ORM\Table(name="cg_fase", indexes={@ORM\Index(name="modalidade_id", columns={"modalidade_id"}), @ORM\Index(name="tipo_id", columns={"tipo_id"})})
  * @ORM\Entity
  */
 class Fase
@@ -129,6 +129,10 @@ class Fase
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    public function getValues() {
+        return get_object_vars($this);
     }
 }
 

@@ -1,13 +1,13 @@
 <?php
 
-
+namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Time
  *
- * @ORM\Table(name="time")
+ * @ORM\Table(name="cg_time")
  * @ORM\Entity
  */
 class Time
@@ -61,6 +61,10 @@ class Time
     public function getNome()
     {
         return $this->nome;
+    }
+
+    public function getValues() {
+        return get_object_vars($this);
     }
 }
 
