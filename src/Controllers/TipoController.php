@@ -70,10 +70,7 @@ class TipoController {
          */
         $entityManager->persist($tipo);
         $entityManager->flush();
-        
-
-        $logger->info('Tipo:', array($tipo->getId()));
-        
+      
         $return = $response->withJson($tipo, 201)
             ->withHeader('Content-type', 'application/json');
         return $return;       

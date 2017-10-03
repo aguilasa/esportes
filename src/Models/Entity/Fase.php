@@ -19,14 +19,14 @@ class Fase
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nome", type="string", length=100, nullable=true)
      */
-    private $nome;
+    public $nome;
 
     /**
      * @var \Modalidade
@@ -36,7 +36,7 @@ class Fase
      *   @ORM\JoinColumn(name="modalidade_id", referencedColumnName="id")
      * })
      */
-    private $modalidade;
+    public $modalidade;
 
     /**
      * @var \Tipo
@@ -46,7 +46,7 @@ class Fase
      *   @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
      * })
      */
-    private $tipo;
+    public $tipo;
 
 
     /**

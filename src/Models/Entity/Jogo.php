@@ -19,42 +19,42 @@ class Jogo
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="ordem", type="integer", nullable=true)
      */
-    private $ordem;
+    public $ordem;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="placar_1", type="integer", nullable=true)
      */
-    private $placar1;
+    public $placar1;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="penalti_1", type="integer", nullable=true)
      */
-    private $penalti1;
+    public $penalti1;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="placar_2", type="integer", nullable=true)
      */
-    private $placar2;
+    public $placar2;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="penalti_2", type="integer", nullable=true)
      */
-    private $penalti2;
+    public $penalti2;
 
     /**
      * @var \Fase
@@ -64,7 +64,7 @@ class Jogo
      *   @ORM\JoinColumn(name="fase_id", referencedColumnName="id")
      * })
      */
-    private $fase;
+    public $fase;
 
     /**
      * @var \Time
@@ -74,7 +74,7 @@ class Jogo
      *   @ORM\JoinColumn(name="time_1", referencedColumnName="id")
      * })
      */
-    private $time1;
+    public $time1;
 
     /**
      * @var \Time
@@ -84,7 +84,7 @@ class Jogo
      *   @ORM\JoinColumn(name="time_2", referencedColumnName="id")
      * })
      */
-    private $time2;
+    public $time2;
 
     /**
      * @var \Situacao
@@ -94,7 +94,7 @@ class Jogo
      *   @ORM\JoinColumn(name="situacao_id", referencedColumnName="id")
      * })
      */
-    private $situacao;
+    public $situacao;
 
 
     /**

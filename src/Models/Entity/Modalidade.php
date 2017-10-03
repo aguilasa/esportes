@@ -19,14 +19,14 @@ class Modalidade
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nome", type="string", length=100, nullable=true)
      */
-    private $nome;
+    public $nome;
 
 
     /**
