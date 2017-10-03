@@ -21,9 +21,14 @@ abstract class Base
         $this->container = $container;
     }
 
+    public function getRepository() {
+        return $this->container->get('em')->getRepository($this->getRepositoryPath());
+    }
+
     abstract public function list($request, $response, $args);
     abstract public function create($request, $response, $args);
     abstract public function view($request, $response, $args);
     abstract public function update($request, $response, $args);
     abstract public function delete($request, $response, $args);
+    abstract public function getRepositoryPath();
 }

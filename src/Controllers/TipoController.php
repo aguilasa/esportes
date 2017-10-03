@@ -13,6 +13,11 @@ require_once 'Base.php';
  */
 class TipoController extends Base {
 
+
+    public function getRepositoryPath() {
+        return 'App\Models\Entity\Tipo';
+    }
+
     /**
      * Listagem de Tipos
      * @param [type] $request
@@ -21,8 +26,8 @@ class TipoController extends Base {
      * @return Response
      */
     public function list($request, $response, $args) {
-        $entityManager = $this->container->get('em');
-        $tiposRepository = $entityManager->getRepository('App\Models\Entity\Tipo');
+        $tiposRepository = $this->getRepository();
+
         $tipos = $tiposRepository->findAll();
         $return = $response->withJson($tipos, 200)
             ->withHeader('Content-type', 'application/json');
