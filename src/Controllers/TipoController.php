@@ -18,8 +18,8 @@ class TipoController extends Base
 
     public function list($request, $response, $args)
     {
-        $tipos = $this->findAll();
-        $return = $response->withJson($tipos, 200)
+        $all = $this->findAll();
+        $return = $response->withJson($all, 200)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
@@ -27,14 +27,14 @@ class TipoController extends Base
     public function create($request, $response, $args)
     {
         $params = (object) $request->getParams();
-        $tipo = (new Tipo())->setNome($params->nome);
+        $value = (new Tipo())->setNome($params->nome);
 
         $logger = $this->container->get('logger');
-        $logger->info('Tipo Created!', $tipo->getValues());
+        $logger->info('Tipo Created!', $value->getValues());
 
-        $this->persist($tipo);
+        $this->persist($value);
       
-        $return = $response->withJson($tipo, 201)
+        $return = $response->withJson($value, 201)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
@@ -42,15 +42,15 @@ class TipoController extends Base
     public function view($request, $response, $args)
     {
         $id = (int) $args['id'];
-        $tipo = $this->find($id);
+        $value = $this->find($id);
 
-        if (!$tipo) {
+        if (!$value) {
             $logger = $this->container->get('logger');
             $logger->warning("Tipo {$id} Not Found");
             throw new \Exception("Tipo not Found", 404);
         }
 
-        $return = $response->withJson($tipo, 200)
+        $return = $response->withJson($value, 200)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
@@ -58,18 +58,18 @@ class TipoController extends Base
     public function update($request, $response, $args)
     {
         $id = (int) $args['id'];
-        $tipo = $this->find($id);
+        $value = $this->find($id);
 
-        if (!$tipo) {
+        if (!$value) {
             $logger = $this->container->get('logger');
             $logger->warning("Tipo {$id} Not Found");
             throw new \Exception("Tipo not Found", 404);
         }
 
-        $tipo->setNome($request->getParam('nome'));
-        $this->persist($tipo);
+        $value->setNome($request->getParam('nome'));
+        $this->persist($value);
         
-        $return = $response->withJson($tipo, 200)
+        $return = $response->withJson($value, 200)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
@@ -77,16 +77,16 @@ class TipoController extends Base
     public function delete($request, $response, $args)
     {
         $id = (int) $args['id'];
-        $tipo = $this->find($id);
+        $value = $this->find($id);
 
-        if (!$tipo) {
+        if (!$value) {
             $logger = $this->container->get('logger');
             $logger->warning("Tipo {$id} Not Found");
             throw new \Exception("Tipo not Found", 404);
         }
 
-        $this->remove($tipo);
-        $return = $response->withJson(['msg' => "Deletando o livro {$id}"], 204)
+        $this->remove($value);
+        $return = $response->withJson(['msg' => "Deletando o tipo {$id}"], 204)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }

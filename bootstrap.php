@@ -138,4 +138,3 @@ $app->add(new TrailingSlash(false));
  */
 $trustedProxies = ['0.0.0.0', '127.0.0.1'];
 $app->add(new RKA\Middleware\SchemeAndHost($trustedProxies));
-
