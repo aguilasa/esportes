@@ -21,8 +21,38 @@ abstract class Base
         $this->container = $container;
     }
 
-    public function getRepository() {
-        return $this->container->get('em')->getRepository($this->getRepositoryPath());
+    public function getEntityManager()
+    {
+        return $this->container->get('em');
+    }
+
+    public function getRepository()
+    {
+        return $this->getEntityManager()->getRepository($this->getRepositoryPath());
+    }
+
+    public function find($id)
+    {
+        return $this->getRepository()->find($id);
+    }
+
+    public function findAll()
+    {
+        return $this->getRepository()->findAll();
+    }
+
+    public function persist($value)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($value);
+        $entityManager->flush();
+    }
+
+    public function remove($value)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($value);
+        $entityManager->flush();
     }
 
     abstract public function list($request, $response, $args);
