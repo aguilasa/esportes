@@ -55,7 +55,15 @@ abstract class Base
         $entityManager->flush();
     }
 
-    abstract public function list($request, $response, $args);
+    public function list($request, $response, $args)
+    {
+        $all = $this->findAll();
+        $return = $response->withJson($all, 200)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    abstract public function getEntityName();
     abstract public function create($request, $response, $args);
     abstract public function view($request, $response, $args);
     abstract public function update($request, $response, $args);

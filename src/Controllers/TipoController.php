@@ -16,14 +16,10 @@ class TipoController extends Base
         return 'App\Models\Entity\Tipo';
     }
 
-    public function list($request, $response, $args)
-    {
-        $all = $this->findAll();
-        $return = $response->withJson($all, 200)
-            ->withHeader('Content-type', 'application/json');
-        return $return;
+    public function getEntityName() {
+        return 'Tipo';
     }
-    
+
     public function create($request, $response, $args)
     {
         $params = (object) $request->getParams();
