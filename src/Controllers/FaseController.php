@@ -6,9 +6,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 use App\Models\Entity\Fase;
 
+require_once 'Base.php';
+
 /**
  * Controller Fase
  */
- class FaseController {
+class FaseController {
 
- }
+}
