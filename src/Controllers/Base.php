@@ -6,19 +6,17 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 abstract class Base
 {
-    /**
-     * Container Class
-     * @var [object]
-     */
     protected $container;
      
-    /**
-     * Undocumented function
-     * @param [object] $container
-     */
     public function __construct($container)
     {
         $this->container = $container;
+    }
+
+    public function getRepositoryPath()
+    {
+        $entName = $this->getEntityName();
+        return 'App\Models\Entity\{$entName}';
     }
 
     public function getEntityManager()
@@ -63,10 +61,81 @@ abstract class Base
         return $return;
     }
 
+    public function view($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+        $value = $this->find($id);
+
+        if (!$value) {
+            $entName = $this->getEntityName();
+            $logger = $this->container->get('logger');
+            $logger->warning("{$entName} {$id} Not Found");
+            throw new \Exception("{$entName} not Found", 404);
+        }
+
+        $return = $response->withJson($value, 200)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    public function delete($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+        $value = $this->find($id);
+
+        if (!$value) {
+            $entName = $this->getEntityName();
+            $logger = $this->container->get('logger');
+            $logger->warning("{$entName} {$id} Not Found");
+            throw new \Exception("{$entName} not Found", 404);
+        }
+
+        $this->remove($value);
+        $return = $response->withJson(['msg' => "Deletando o {$entName} {$id}"], 204)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    public function create($request, $response, $args)
+    {
+        $params = (object) $request->getParams();
+        $value = $this->getNewEntity();
+
+        $this->setValues($value, $params);
+
+        $entName = $this->getEntityName();
+        $logger = $this->container->get('logger');
+        $logger->info('{$entName} Created!', $value->getValues());
+
+        $this->persist($value);
+      
+        $return = $response->withJson($value, 201)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    public function update($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+        $params = (object) $request->getParams();
+        $value = $this->find($id);
+
+        if (!$value) {
+            $entName = $this->getEntityName();
+            $logger = $this->container->get('logger');
+            $logger->warning("{$entName} {$id} Not Found");
+            throw new \Exception("{$entName} not Found", 404);
+        }
+
+        $this->setValues($value, $params);
+        $this->persist($value);
+        
+        $return = $response->withJson($value, 200)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
     abstract public function getEntityName();
-    abstract public function create($request, $response, $args);
-    abstract public function view($request, $response, $args);
-    abstract public function update($request, $response, $args);
-    abstract public function delete($request, $response, $args);
-    abstract public function getRepositoryPath();
+    abstract public function setValues(&$entity, $params);
+    abstract public function getNewEntity();
 }

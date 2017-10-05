@@ -11,6 +11,17 @@ require_once 'Base.php';
 /**
  * Controller Situacao
  */
- class SituacaoController {
+ class SituacaoController extends Base
+{
+    public function getEntityName() {
+        return 'Tipo';
+    }
 
+    public function getNewEntity(){
+        return new Tipo();
+    }
+
+    public function setValues(&$entity, $params) {
+        $entity->setNome($params->nome);
+    }
  }
