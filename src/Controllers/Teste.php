@@ -1,10 +1,15 @@
 <?php
 namespace App\Controllers;
 
+use \Datetime;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-abstract class Base
+use App\Models\Entity\Person;
+use App\Models\Entity\Company;
+use App\Models\Entity\Job;
+
+class Teste
 {
     protected $container;
      
@@ -15,7 +20,7 @@ abstract class Base
 
     public function getRepositoryPath()
     {
-        return 'App\\Models\\Entity\\' . $this->getEntityName();
+        return 'App\\Models\\Entity\\Job';
     }
 
     public function getEntityManager()
@@ -59,6 +64,29 @@ abstract class Base
 
     public function list($request, $response, $args)
     {
+       /* $em = $this->getEntityManager();
+        $person = new Person();
+        $person->setName('Jasper N. Brouwer');
+        $em->persist($person);
+        
+        $company = new Company();
+        $company->setName('Future500 B.V.');
+        $em->persist($company);
+        
+        $em->flush();
+
+        $person = $em->find('App\\Models\\Entity\\Person', 1);
+        $company = $em->find('App\\Models\\Entity\\Company', 1);
+        
+        $job = new Job();
+        $job->setPerson($person)
+            ->setCompany($company)
+            ->setStartedOn(new DateTime('01-10-2009'))
+            ->setMonthlySalary(10000);
+        $em->persist($job);
+        
+        $em->flush();*/
+
         $all = $this->findAll();
         $return = $response->withJson($all, 200)
             ->withHeader('Content-type', 'application/json');
@@ -139,7 +167,25 @@ abstract class Base
         return $return;
     }
 
-    abstract public function getEntityName();
-    abstract public function setValues(&$entity, $params);
-    abstract public function getNewEntity();
+    public function getEntityName() {
+		return 'Job';
+	}
+	
+    public function setValues(&$entity, $params)
+    {
+        $modalidade = $this->findModalidade($params->modalidade["id"]);
+
+        if (!$modalidade) {
+            $logger = $this->container->get('logger');
+            $logger->warning("Modalidade {$id} Not Found");
+            throw new \Exception("Modalidade not Found", 404);
+        }
+        
+        $entity->setNome($params->nome);
+        $entity->setModalidade($modalidade);
+    }
+	
+    public function getNewEntity() {
+		return new Job();
+	}
 }

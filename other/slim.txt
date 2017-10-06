@@ -30,5 +30,6 @@ php -S localhost:8000
 mkdir -p src/Models/Entity
 
 vendor/bin/doctrine orm:schema-tool:update --force
+vendor\bin\doctrine orm:schema-tool:update --force
 
 composer require slim/slim

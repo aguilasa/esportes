@@ -8,20 +8,20 @@ use App\Models\Entity\Situacao;
 
 require_once 'Base.php';
 
-/**
- * Controller Situacao
- */
- class SituacaoController extends Base
+class SituacaoController extends Base
 {
-    public function getEntityName() {
-        return 'Tipo';
+    public function getEntityName()
+    {
+        return 'Situacao';
     }
 
-    public function getNewEntity(){
-        return new Tipo();
+    public function getNewEntity()
+    {
+        return new Situacao();
     }
 
-    public function setValues(&$entity, $params) {
+    public function setValues(&$entity, $params)
+    {
         $entity->setNome($params->nome);
     }
- }
+}

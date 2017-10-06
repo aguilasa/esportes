@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -29,9 +28,9 @@ class Fase
     public $nome;
 
     /**
-     * @var \Modalidade
+     * @var Modalidade
      *
-     * @ORM\ManyToOne(targetEntity="Modalidade")
+     * @ORM\ManyToOne(targetEntity="Modalidade", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="modalidade_id", referencedColumnName="id")
      * })
@@ -41,7 +40,7 @@ class Fase
     /**
      * @var \Tipo
      *
-     * @ORM\ManyToOne(targetEntity="Tipo")
+     * @ORM\ManyToOne(targetEntity="Tipo", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
      * })
@@ -86,11 +85,11 @@ class Fase
     /**
      * Set modalidade
      *
-     * @param \Modalidade $modalidade
+     * @param Modalidade $modalidade
      *
      * @return Fase
      */
-    public function setModalidade(\Modalidade $modalidade = null)
+    public function setModalidade(Modalidade $modalidade = null)
     {
         $this->modalidade = $modalidade;
 
@@ -100,7 +99,7 @@ class Fase
     /**
      * Get modalidade
      *
-     * @return \Modalidade
+     * @return Modalidade
      */
     public function getModalidade()
     {
@@ -110,11 +109,11 @@ class Fase
     /**
      * Set tipo
      *
-     * @param \Tipo $tipo
+     * @param Tipo $tipo
      *
      * @return Fase
      */
-    public function setTipo(\Tipo $tipo = null)
+    public function setTipo(Tipo $tipo = null)
     {
         $this->tipo = $tipo;
 
@@ -124,7 +123,7 @@ class Fase
     /**
      * Get tipo
      *
-     * @return \Tipo
+     * @return Tipo
      */
     public function getTipo()
     {

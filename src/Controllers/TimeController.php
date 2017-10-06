@@ -8,9 +8,21 @@ use App\Models\Entity\Time;
 
 require_once 'Base.php';
 
-/**
- * Controller Time
- */
- class TimeController {
 
- }
+class TimeController extends Base
+{
+    public function getEntityName()
+    {
+        return 'Time';
+    }
+  
+    public function getNewEntity()
+    {
+        return new Time();
+    }
+  
+    public function setValues(&$entity, $params)
+    {
+        $entity->setNome($params->nome);
+    }
+}
