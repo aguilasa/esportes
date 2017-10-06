@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="cg_fase")
  */
-class Job
+class Fase
 {
     /**
      * @ORM\Column(type="integer")
