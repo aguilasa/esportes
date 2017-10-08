@@ -138,3 +138,12 @@ $app->add(new TrailingSlash(false));
  */
 $trustedProxies = ['0.0.0.0', '127.0.0.1'];
 $app->add(new RKA\Middleware\SchemeAndHost($trustedProxies));
+
+$app->add(new \Tuupola\Middleware\Cors([
+    "origin" => ["*"],
+    "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    "headers.allow" => [],
+    "headers.expose" => [],
+    "credentials" => false,
+    "cache" => 0,
+]));
