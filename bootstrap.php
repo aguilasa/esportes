@@ -70,8 +70,8 @@ $container['notFoundHandler'] = function ($container) {
  * Serviço de Logging em Arquivo
  */
 $container['logger'] = function($container) {
-    $logger = new Monolog\Logger('books-microservice');
-    $logfile = __DIR__ . '/log/books-microservice.log';
+    $logger = new Monolog\Logger('esportes');
+    $logfile = __DIR__ . '/log/esportes.log';
     $stream = new Monolog\Handler\StreamHandler($logfile, Monolog\Logger::DEBUG);
     $fingersCrossed = new Monolog\Handler\FingersCrossedHandler(
         $stream, Monolog\Logger::INFO);

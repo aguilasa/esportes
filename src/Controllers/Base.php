@@ -87,8 +87,8 @@ abstract class Base
         $id = (int) $args['id'];
         $value = $this->find($id);
 
+        $entName = $this->getEntityName();
         if (!$value) {
-            $entName = $this->getEntityName();
             $logger = $this->container->get('logger');
             $logger->warning("{$entName} {$id} Not Found");
             throw new \Exception("{$entName} not Found", 404);
