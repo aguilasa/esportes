@@ -25,10 +25,7 @@ class FaseController extends Base
     private function findModalidade($id)
     {
         $repository = $this->getRepositoryByEntity('Modalidade');
-        $modalidade = new Modalidade();
-        $object = $repository->find($id);
-        $modalidade->id = $object->getId();
-        $modalidade->setNome($object->getNome());
+        $modalidade = $repository->find($id);
         return $modalidade;
     }
 
@@ -57,24 +54,27 @@ class FaseController extends Base
             throw new \Exception("Modalidade not Found", 404);
         }
 
-        for ($i = 1; $i <= 4; $i++) {
+        $sql = 'DELETE App\Models\Entity\Fase f WHERE f.modalidade = ?1';
+        $query = $this->getEntityManager()->createQuery($sql)
+                                          ->setParameter(1, $id)
+                                          ->getResult();
+
+        $sql = 'SELECT t FROM App\Models\Entity\Tipo t ORDER BY t.id ASC';
+
+        $tipos = $this->getEntityManager()->createQuery($sql)->getResult();
+                         
+        $values = array();
+        foreach ($tipos as $tipo) {
             $value = $this->getNewEntity();
-            $value.setModalidade($modalidade);
+            $value->setModalidade($modalidade);
+            $value->setTipo($tipo);
+            $value->setNome($tipo->getNome());
+            $this->persist($value);
+            
+            array_push($values, $value);
         }
 
-
-        $params = (object) $request->getParams();
-        $value = $this->getNewEntity();
-
-        $this->setValues($value, $params);
-
-        $entName = $this->getEntityName();
-        $logger = $this->container->get('logger');
-        $logger->info('{$entName} Created!', $value->getValues());
-
-        $this->persist($value);
-      
-        $return = $response->withJson($value, 201)
+        $return = $response->withJson($values, 201)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
