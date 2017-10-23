@@ -38,12 +38,7 @@ $app->group('/fase', function () {
     $this->get('/{id:[0-9]+}', '\App\Controllers\FaseController:view');
     $this->put('/{id:[0-9]+}', '\App\Controllers\FaseController:update');
     $this->delete('/{id:[0-9]+}', '\App\Controllers\FaseController:delete');
+    $this->post('/generate/{id:[0-9]+}', '\App\Controllers\FaseController:generate');
 });
 
-$app->group('/teste', function () {
-    $this->get('', '\App\Controllers\Teste:list');
-    $this->post('', '\App\Controllers\Teste:create');
-    $this->get('/{id:[0-9]+}', '\App\Controllers\Teste:view');
-    $this->put('/{id:[0-9]+}', '\App\Controllers\Teste:update');
-    $this->delete('/{id:[0-9]+}', '\App\Controllers\Teste:delete');
-});
+
