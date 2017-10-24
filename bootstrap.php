@@ -2,13 +2,13 @@
 
 require './vendor/autoload.php';
 
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Psr7Middlewares\Middleware\TrailingSlash;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Tools\Setup;
 use Monolog\Logger;
+use Psr7Middlewares\Middleware\TrailingSlash;
 
 /**
  * Configurações
@@ -16,7 +16,7 @@ use Monolog\Logger;
 $configs = [
     'settings' => [
         'displayErrorDetails' => true,
-    ]   
+    ],
 ];
 
 /**
@@ -26,7 +26,6 @@ $configs = [
  * da nossa API
  */
 $container = new \Slim\Container($configs);
-
 
 /**
  * Converte os Exceptions Genéricas dentro da Aplicação em respostas JSON
@@ -69,14 +68,14 @@ $container['notFoundHandler'] = function ($container) {
 /**
  * Serviço de Logging em Arquivo
  */
-$container['logger'] = function($container) {
+$container['logger'] = function ($container) {
     $logger = new Monolog\Logger('esportes');
     $logfile = __DIR__ . '/log/esportes.log';
     $stream = new Monolog\Handler\StreamHandler($logfile, Monolog\Logger::DEBUG);
     $fingersCrossed = new Monolog\Handler\FingersCrossedHandler(
         $stream, Monolog\Logger::INFO);
     $logger->pushHandler($fingersCrossed);
-    
+
     return $logger;
 };
 
@@ -85,7 +84,7 @@ $isDevMode = true;
 /**
  * Diretório de Entidades e Metadata do Doctrine
  */
-$paths = array(__DIR__."/src/Models/Entity");
+$paths = array(__DIR__ . "/src/Models/Entity");
 
 //$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src/Models/Entity"), $isDevMode);
 
@@ -114,12 +113,10 @@ $conn = array(
  */
 $entityManager = EntityManager::create($conn, $config);
 
-
 /**
  * Coloca o Entity manager dentro do container com o nome de em (Entity Manager)
  */
 $container['em'] = $entityManager;
-
 
 /**
  * Application Instance
@@ -127,7 +124,7 @@ $container['em'] = $entityManager;
 $app = new \Slim\App($container);
 
 /**
- * @Middleware Tratamento da / do Request 
+ * @Middleware Tratamento da / do Request
  * true - Adiciona a / no final da URL
  * false - Remove a / no final da URL
  */

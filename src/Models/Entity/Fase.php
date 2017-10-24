@@ -17,13 +17,13 @@ class Fase
     public $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Modalidade")
+     * @ORM\ManyToOne(targetEntity="Modalidade", fetch="EAGER")
      * @ORM\JoinColumn(name="modalidade_id", referencedColumnName="id", nullable=FALSE)
      */
     public $modalidade;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tipo")
+     * @ORM\ManyToOne(targetEntity="Tipo", fetch="EAGER")
      * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id", nullable=FALSE)
      */
     public $tipo;

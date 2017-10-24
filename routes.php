@@ -39,6 +39,7 @@ $app->group('/fase', function () {
     $this->put('/{id:[0-9]+}', '\App\Controllers\FaseController:update');
     $this->delete('/{id:[0-9]+}', '\App\Controllers\FaseController:delete');
     $this->post('/generate/{id:[0-9]+}', '\App\Controllers\FaseController:generate');
+    $this->get('/modalidade/{id:[0-9]+}', '\App\Controllers\FaseController:modalidade');
 });
 
 

@@ -1,10 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-
-use App\Models\Entity\Fase;
+use App\Models\Entity\Fase as Fase;
 use App\Models\Entity\Modalidade as Modalidade;
 use App\Models\Entity\Tipo as Tipo;
 
@@ -29,6 +26,13 @@ class FaseController extends Base
         return $modalidade;
     }
 
+    private function findTipo($id)
+    {
+        $repository = $this->getRepositoryByEntity('Tipo');
+        $tipo = $repository->find($id);
+        return $tipo;
+    }
+
     public function setValues(&$entity, $params)
     {
         $modalidade = $this->findModalidade($params->modalidade["id"]);
@@ -38,7 +42,7 @@ class FaseController extends Base
             $logger->warning("Modalidade {$id} Not Found");
             throw new \Exception("Modalidade not Found", 404);
         }
-        
+
         $entity->setNome($params->nome);
         $entity->setModalidade($modalidade);
     }
@@ -56,13 +60,13 @@ class FaseController extends Base
 
         $sql = 'DELETE App\Models\Entity\Fase f WHERE f.modalidade = ?1';
         $query = $this->getEntityManager()->createQuery($sql)
-                                          ->setParameter(1, $id)
-                                          ->getResult();
+            ->setParameter(1, $id)
+            ->getResult();
 
         $sql = 'SELECT t FROM App\Models\Entity\Tipo t ORDER BY t.id ASC';
 
         $tipos = $this->getEntityManager()->createQuery($sql)->getResult();
-                         
+
         $values = array();
         foreach ($tipos as $tipo) {
             $value = $this->getNewEntity();
@@ -70,11 +74,48 @@ class FaseController extends Base
             $value->setTipo($tipo);
             $value->setNome($tipo->getNome());
             $this->persist($value);
-            
+
             array_push($values, $value);
         }
 
         $return = $response->withJson($values, 201)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    public function modalidade($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+
+        $modalidade = $this->findModalidade($id);
+
+        if (!$modalidade) {
+            $logger = $this->container->get('logger');
+            $logger->warning("Modalidade {$id} Not Found");
+            throw new \Exception("Modalidade not Found", 404);
+        }
+
+        $sql = 'SELECT f FROM App\Models\Entity\Fase f WHERE f.modalidade = ?1 ORDER BY f.id ASC';
+
+        $query = $this->getEntityManager()->createQuery($sql)
+            ->setParameter(1, $id)
+            ->getResult();
+
+        $values = array();
+        foreach ($query as $value) {
+            $tipo = $this->findTipo($value->tipo->id);
+            $value->setTipo($tipo);
+            /* unset($value->modalidade->__initializer__);
+            unset($value->modalidade->__cloner__);
+            unset($value->modalidade->__isInitialized__);
+            unset($value->tipo->__initializer__);
+            unset($value->tipo->__cloner__);
+            unset($value->tipo->__isInitialized__); */
+
+            array_push($values, $value);
+        }
+
+        $return = $response->withJson($values, 200)
             ->withHeader('Content-type', 'application/json');
         return $return;
     }
