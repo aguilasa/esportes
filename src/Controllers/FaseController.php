@@ -33,6 +33,12 @@ class FaseController extends Base
         return $tipo;
     }
 
+    private function unsetProxies(&$object) {
+        unset($object->__initializer__);
+        unset($object->__cloner__);
+        unset($object->__isInitialized__);
+    }
+
     public function setValues(&$entity, $params)
     {
         $modalidade = $this->findModalidade($params->modalidade["id"]);
@@ -103,15 +109,8 @@ class FaseController extends Base
 
         $values = array();
         foreach ($query as $value) {
-            $tipo = $this->findTipo($value->tipo->id);
-            $value->setTipo($tipo);
-            /* unset($value->modalidade->__initializer__);
-            unset($value->modalidade->__cloner__);
-            unset($value->modalidade->__isInitialized__);
-            unset($value->tipo->__initializer__);
-            unset($value->tipo->__cloner__);
-            unset($value->tipo->__isInitialized__); */
-
+            $this->unsetProxies($value->modalidade);
+            $this->unsetProxies($value->tipo);
             array_push($values, $value);
         }
 
