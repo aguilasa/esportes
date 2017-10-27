@@ -139,10 +139,18 @@ abstract class Base
         return $return;
     }
 
-    protected function unsetProxies(&$object) {
+    protected function unsetProxies(&$object)
+    {
         unset($object->__initializer__);
         unset($object->__cloner__);
         unset($object->__isInitialized__);
+    }
+
+    protected function deleteQuery($sql)
+    {
+        $query = $this->getEntityManager()->createQuery($sql)
+            ->setParameter(1, $id)
+            ->getResult();
     }
 
     abstract public function getEntityName();

@@ -58,11 +58,9 @@ class FaseController extends Base
             throw new \Exception("Modalidade not Found", 404);
         }
 
-        $sql = 'DELETE App\Models\Entity\Fase f WHERE f.modalidade = ?1';
-        $query = $this->getEntityManager()->createQuery($sql)
-            ->setParameter(1, $id)
-            ->getResult();
-
+        //$this->deleteQuery('DELETE App\Models\Entity\Jogo j WHERE f.modalidade = ?1');
+        $this->deleteQuery('DELETE App\Models\Entity\Fase f WHERE f.modalidade = ?1');
+        
         $sql = 'SELECT t FROM App\Models\Entity\Tipo t ORDER BY t.id ASC';
 
         $tipos = $this->getEntityManager()->createQuery($sql)->getResult();
