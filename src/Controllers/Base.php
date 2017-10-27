@@ -146,7 +146,7 @@ abstract class Base
         unset($object->__isInitialized__);
     }
 
-    protected function deleteQuery($sql)
+    protected function deleteQuery($sql, $id)
     {
         $query = $this->getEntityManager()->createQuery($sql)
             ->setParameter(1, $id)
