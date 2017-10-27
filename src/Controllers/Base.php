@@ -139,6 +139,12 @@ abstract class Base
         return $return;
     }
 
+    protected function unsetProxies(&$object) {
+        unset($object->__initializer__);
+        unset($object->__cloner__);
+        unset($object->__isInitialized__);
+    }
+
     abstract public function getEntityName();
     abstract public function setValues(&$entity, $params);
     abstract public function getNewEntity();

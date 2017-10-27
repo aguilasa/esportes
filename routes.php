@@ -42,4 +42,14 @@ $app->group('/fase', function () {
     $this->get('/modalidade/{id:[0-9]+}', '\App\Controllers\FaseController:modalidade');
 });
 
+$app->group('/jogo', function () {
+    $this->get('', '\App\Controllers\JogoController:list');
+    $this->post('', '\App\Controllers\JogoController:create');
+    $this->get('/{id:[0-9]+}', '\App\Controllers\JogoController:view');
+    $this->put('/{id:[0-9]+}', '\App\Controllers\JogoController:update');
+    $this->delete('/{id:[0-9]+}', '\App\Controllers\JogoController:delete');
+    $this->get('/fase/{id:[0-9]+}', '\App\Controllers\JogoController:fase');
+});
+
+
 

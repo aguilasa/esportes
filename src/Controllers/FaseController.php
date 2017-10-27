@@ -33,12 +33,6 @@ class FaseController extends Base
         return $tipo;
     }
 
-    private function unsetProxies(&$object) {
-        unset($object->__initializer__);
-        unset($object->__cloner__);
-        unset($object->__isInitialized__);
-    }
-
     public function setValues(&$entity, $params)
     {
         $modalidade = $this->findModalidade($params->modalidade["id"]);
