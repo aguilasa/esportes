@@ -18,6 +18,11 @@ abstract class Base
         return 'App\\Models\\Entity\\' . $this->getEntityName();
     }
 
+    public function getSerializer()
+    {
+        return $this->container->get('serializer');
+    }
+
     public function getEntityManager()
     {
         return $this->container->get('em');
@@ -77,8 +82,9 @@ abstract class Base
             throw new \Exception("{$entName} not Found", 404);
         }
 
-        $return = $response->withJson($value, 200)
-            ->withHeader('Content-type', 'application/json');
+        $value = $this->getSerializer()->serialize($value, 'json');
+        $response->getBody()->write($value);
+        $return = $response->withStatus(200)->withHeader('Content-type', 'application/json');
         return $return;
     }
 
@@ -137,13 +143,6 @@ abstract class Base
         $return = $response->withJson($value, 200)
             ->withHeader('Content-type', 'application/json');
         return $return;
-    }
-
-    protected function unsetProxies(&$object)
-    {
-        unset($object->__initializer__);
-        unset($object->__cloner__);
-        unset($object->__isInitialized__);
     }
 
     protected function deleteQuery($sql, $id)

@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
 use Monolog\Logger;
 use Psr7Middlewares\Middleware\TrailingSlash;
+use Alcalyn\SerializerDoctrineProxies\DoctrineProxyHandler;
+use Alcalyn\SerializerDoctrineProxies\DoctrineProxySubscriber;
+use JMS\Serializer\EventDispatcher\EventDispatcher;
+use JMS\Serializer\Handler\HandlerRegistryInterface;
+use JMS\Serializer\SerializerBuilder;
 
 /**
  * Configurações
@@ -26,6 +31,18 @@ $configs = [
  * da nossa API
  */
 $container = new \Slim\Container($configs);
+
+$serializer = SerializerBuilder::create()
+    ->addDefaultHandlers() // This line to avoid to default handlers to be overrided by the new one.
+    ->configureHandlers(function (HandlerRegistryInterface $handlerRegistry) {
+        $handlerRegistry->registerSubscribingHandler(new DoctrineProxyHandler());
+    })
+    ->configureListeners(function (EventDispatcher $dispatcher) {
+        $dispatcher->addSubscriber(new DoctrineProxySubscriber(false)); // false to disable lazy loading.
+    })
+    ->build();
+
+$container['serializer'] = $serializer;
 
 /**
  * Converte os Exceptions Genéricas dentro da Aplicação em respostas JSON

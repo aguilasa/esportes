@@ -53,13 +53,12 @@ class JogoController extends Base
 
         $values = array();
         foreach ($query as $value) {
-            $this->unsetProxies($value->fase);
-            $this->unsetProxies($value->tipo);
             array_push($values, $value);
         }
 
-        $return = $response->withJson($values, 200)
-            ->withHeader('Content-type', 'application/json');
+        $values = $this->getSerializer()->serialize($values, 'json');
+        $response->getBody()->write($values);
+        $return = $response->withStatus(200)->withHeader('Content-type', 'application/json');
         return $return;
     }
 }

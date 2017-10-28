@@ -17,25 +17,25 @@ class Jogo
     public $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Fase")
+     * @ORM\ManyToOne(targetEntity="Fase", fetch="EAGER")
      * @ORM\JoinColumn(name="fase_id", referencedColumnName="id", nullable=FALSE)
      */
     public $fase;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Situacao")
+     * @ORM\ManyToOne(targetEntity="Situacao", fetch="EAGER")
      * @ORM\JoinColumn(name="situacao_id", referencedColumnName="id", nullable=FALSE)
      */
     public $situacao;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Time")
+     * @ORM\ManyToOne(targetEntity="Time", fetch="EAGER")
      * @ORM\JoinColumn(name="time1", referencedColumnName="id", nullable=FALSE)
      */
     public $time1;
      
     /**
-    * @ORM\ManyToOne(targetEntity="Time")
+    * @ORM\ManyToOne(targetEntity="Time", fetch="EAGER")
     * @ORM\JoinColumn(name="time2", referencedColumnName="id", nullable=FALSE)
     */
     public $time2;

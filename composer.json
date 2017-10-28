@@ -5,7 +5,8 @@
     "oscarotero/psr7-middlewares": "^3.20",
     "monolog/monolog": "^1.22",
     "akrabat/rka-scheme-and-host-detection-middleware": "^0.3.0",
-    "tuupola/cors-middleware": "^0.5.2"
+    "tuupola/cors-middleware": "^0.5.2",
+    "alcalyn/serializer-doctrine-proxies": "1.1.2"
   },
   "autoload": {
     "psr-4": {
