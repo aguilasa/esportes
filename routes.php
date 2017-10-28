@@ -49,6 +49,7 @@ $app->group('/jogo', function () {
     $this->put('/{id:[0-9]+}', '\App\Controllers\JogoController:update');
     $this->delete('/{id:[0-9]+}', '\App\Controllers\JogoController:delete');
     $this->get('/fase/{id:[0-9]+}', '\App\Controllers\JogoController:fase');
+    $this->post('/fase/{id:[0-9]+}', '\App\Controllers\JogoController:writeFase');
 });
 
 

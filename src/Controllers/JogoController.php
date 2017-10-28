@@ -61,4 +61,31 @@ class JogoController extends Base
         $return = $response->withStatus(200)->withHeader('Content-type', 'application/json');
         return $return;
     }
+
+    public function writeFase($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+        $fase = $this->findFase($id);
+        
+        if (!$fase) {
+            $logger = $this->container->get('logger');
+            $logger->warning("Fase {$id} Not Found");
+            throw new \Exception("Fase not Found", 404);
+        }
+                
+        $params = (object) $request->getParams();
+        $value = $this->getNewEntity();
+
+        $this->setValues($value, $params);
+
+        $entName = $this->getEntityName();
+        $logger = $this->container->get('logger');
+        $logger->info('{$entName} Created!', $value->getValues());
+
+        $this->persist($value);
+      
+        $return = $response->withJson($value, 201)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
 }
