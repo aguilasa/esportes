@@ -29,16 +29,15 @@ abstract class Base
     }
 
     public function transaction() {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
+        $this->getEntityManager()->getConnection()->beginTransaction();
     }
 
     public function commit() {
-        $em->getConnection()->commit();
+        $this->getEntityManager()->getConnection()->commit();
     }
 
     public function rollback() {
-        $em->getConnection()->rollBack();
+        $this->getEntityManager()->getConnection()->rollBack();
     }
 
     public function getRepository()
