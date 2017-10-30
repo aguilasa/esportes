@@ -112,8 +112,7 @@ class JogoController extends Base
 
         $values = array();
 
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
+        $this->transaction();
         try {
             $this->deleteQuery('DELETE App\Models\Entity\Jogo j WHERE j.fase = ?1', $id);
                 
@@ -164,9 +163,9 @@ class JogoController extends Base
                 $this->persist($jogo);
                 array_push($values, $jogo);
             }
-            $em->getConnection()->commit();
+            $this->commit();
         } catch (Exception $e) {
-            $em->getConnection()->rollBack();
+            $this->rollBack();
             throw $e;
         }
 

@@ -28,6 +28,19 @@ abstract class Base
         return $this->container->get('em');
     }
 
+    public function transaction() {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+    }
+
+    public function commit() {
+        $em->getConnection()->commit();
+    }
+
+    public function rollback() {
+        $em->getConnection()->rollBack();
+    }
+
     public function getRepository()
     {
         return $this->getEntityManager()->getRepository($this->getRepositoryPath());
