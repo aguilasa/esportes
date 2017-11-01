@@ -21,6 +21,11 @@ class Modalidade
      */
     public $nome;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $futebol;
+
     public function getId()
     {
         return $this->id;
@@ -34,6 +39,17 @@ class Modalidade
     public function setNome($nome)
     {
         $this->nome = $nome;
+        return $this;
+    }
+
+    public function getFutebol()
+    {
+        return $this->futebol;
+    }
+
+    public function setFutebol($futebol)
+    {
+        $this->futebol = $futebol;
         return $this;
     }
 

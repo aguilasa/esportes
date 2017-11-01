@@ -23,5 +23,6 @@ class ModalidadeController extends Base
     public function setValues(&$entity, $params)
     {
         $entity->setNome($params->nome);
+        $entity->setFutebol($params->futebol);
     }
 }
