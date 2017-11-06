@@ -88,6 +88,35 @@ class JogoController extends Base
         return $return;
     }
 
+    public function viewModalidade($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+
+        $modalidade = $this->findModalidade($id);
+
+        if (!$modalidade) {
+            $logger = $this->container->get('logger');
+            $logger->warning("Modalidade {$id} Not Found");
+            throw new \Exception("Modalidade not Found", 404);
+        }
+
+        $sql = 'SELECT j FROM App\Models\Entity\Jogo j WHERE j.fase IN (SELECT f.id FROM App\Models\Entity\Fase f WHERE f.modalidade = ?1) ORDER BY j.ordem ASC';
+
+        $query = $this->getEntityManager()->createQuery($sql)
+            ->setParameter(1, $id)
+            ->getResult();
+
+        $values = array();
+        foreach ($query as $value) {
+            array_push($values, $value);
+        }
+
+        $values = $this->getSerializer()->serialize($values, 'json');
+        $response->getBody()->write($values);
+        $return = $response->withStatus(200)->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
     private function checarJogosTipo($tipo, $total)
     {
         if (($tipo == 1 && $total != 4) || ($tipo == 2 && $total != 2) || ($tipo == 3 && $total != 1) || ($tipo == 4 && $total != 1)) {
@@ -162,6 +191,38 @@ class JogoController extends Base
         }
     }
 
+    private function geraJogosFase($fase, &$values)
+    {
+        $tipo = $fase->tipo->id;
+        $total = self::esperado[$tipo];
+        $ordem = $this->getOrdem($tipo);
+
+        $situacao = $this->findSituacao(1);
+        if (!$situacao) {
+            $logger = $this->container->get('logger');
+            $logger->warning("Situação 1 Not Found");
+            throw new \Exception("Situação not Found", 404);
+        }
+        
+        for ($i = 0; $i < $total; $i++) {
+            $jogo = $this->getNewEntity();            
+
+            $jogo->setFase($fase)
+                 ->setTime1(null)
+                 ->setTime2(null)
+                 ->setSituacao($situacao)
+                 ->setOrdem($ordem)
+                 ->setPlacar1(0)
+                 ->setPenalti1(0)
+                 ->setPlacar2(0)
+                 ->setPenalti2(0);
+
+            $this->persist($jogo);
+            array_push($values, $jogo);
+            $ordem++;
+        }
+    }
+
     public function modalidade($request, $response, $args)
     {
         $id = (int) $args['id'];
@@ -188,6 +249,10 @@ class JogoController extends Base
             $fase = array_shift($query);
             $params = (array) $request->getParams();
             $this->geraJogosPrimeiraFase($fase, $params, $values);
+
+            foreach ($query as $fase) {
+                $this->geraJogosFase($fase, $values);
+            }
 
             $this->commit();
         } catch (Exception $e) {
