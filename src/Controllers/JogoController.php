@@ -99,6 +99,19 @@ class JogoController extends Base
         }
     }
 
+    private function getOrdem($tipo) {
+        switch($tipo) {
+            case 1:
+            return 1;
+            case 2:
+            return 5;
+            case 3: 
+            return 7;
+            case 4:
+            return 8;
+        }
+    }
+
     public function writeFase($request, $response, $args)
     {
         $id = (int) $args['id'];
@@ -121,6 +134,7 @@ class JogoController extends Base
             $total = count($params);
 
             $this->checarJogosTipo($tipo, $total);
+            $ordem = $this->getOrdem($tipo);
             
             for ($i = 0; $i < $total; $i++) {
                 $value = (object) $params[$i];
@@ -154,7 +168,7 @@ class JogoController extends Base
                  ->setTime1($time1)
                  ->setTime2($time2)
                  ->setSituacao($situacao)
-                 ->setOrdem($i + 1)
+                 ->setOrdem($ordem)
                  ->setPlacar1(0)
                  ->setPenalti1(0)
                  ->setPlacar2(0)
@@ -162,6 +176,7 @@ class JogoController extends Base
 
                 $this->persist($jogo);
                 array_push($values, $jogo);
+                $ordem++;
             }
             $this->commit();
         } catch (Exception $e) {
