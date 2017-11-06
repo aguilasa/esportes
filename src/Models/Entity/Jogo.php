@@ -30,13 +30,13 @@ class Jogo
 
     /**
      * @ORM\ManyToOne(targetEntity="Time", fetch="EAGER")
-     * @ORM\JoinColumn(name="time1", referencedColumnName="id", nullable=FALSE)
+     * @ORM\JoinColumn(name="time1", referencedColumnName="id", nullable=TRUE)
      */
     public $time1;
      
     /**
     * @ORM\ManyToOne(targetEntity="Time", fetch="EAGER")
-    * @ORM\JoinColumn(name="time2", referencedColumnName="id", nullable=FALSE)
+    * @ORM\JoinColumn(name="time2", referencedColumnName="id", nullable=TRUE)
     */
     public $time2;
     
