@@ -28,7 +28,45 @@ class JogoController extends Base
   
     public function setValues(&$entity, $params)
     {
-        $entity->setNome($params->nome);
+        if (isset($params->fase["id"])) {
+            $fase = $this->findFase($params->fase["id"]);
+            $entity->setFase($fase);
+        }
+
+        if (isset($params->situacao["id"])) {
+            $situacao = $this->findSituacao($params->situacao["id"]);
+            $entity->setSituacao($situacao);
+        }
+
+        if (isset($params->time1["id"])) {
+            $time1 = $this->findTime($params->time1["id"]);
+            $entity->setTime1($time1);
+        }
+
+        if (isset($params->time2["id"])) {
+            $time2 = $this->findTime($params->time2["id"]);
+            $entity->setTime2($time2);
+        }
+
+        if (isset($params->ordem)) {
+            $entity->setOrdem($params->ordem);
+        }
+
+        if (isset($params->placar1)) {
+            $entity->setPlacar1($params->placar1);
+        }
+        
+        if (isset($params->penalti1)) {
+            $entity->setPenalti1($params->penalti1);
+        }
+
+        if (isset($params->placar2)) {
+            $entity->setPlacar2($params->placar2);
+        }
+        
+        if (isset($params->penalti2)) {
+            $entity->setPenalti2($params->penalti2);
+        }
     }
 
     private function findFase($id)
@@ -205,7 +243,7 @@ class JogoController extends Base
         }
         
         for ($i = 0; $i < $total; $i++) {
-            $jogo = $this->getNewEntity();            
+            $jogo = $this->getNewEntity();
 
             $jogo->setFase($fase)
                  ->setTime1(null)
@@ -263,5 +301,29 @@ class JogoController extends Base
         $return = $response->withJson($values, 201)
             ->withHeader('Content-type', 'application/json');
         return $return;
+    }
+
+    public function finalizar($request, $response, $args)
+    {
+        $id = (int) $args['id'];
+        $jogo = $this->find($id);
+        
+        $situacao = $this->findSituacao(2);
+        $jogo->setSituacao($situacao);
+        $this->persist($jogo);
+
+        $jogos = array();
+        $this->avancarTimes($jogo, $jogos);
+
+        $return = $response->withJson($jogos, 201)
+            ->withHeader('Content-type', 'application/json');
+        return $return;
+    }
+
+    private function avancarTimes($jogo, &$jogos) {
+        if($jogo->getOrdem() <= 4) {
+            
+        }
+
     }
 }

@@ -51,6 +51,7 @@ $app->group('/jogo', function () {
     $this->get('/fase/{id:[0-9]+}', '\App\Controllers\JogoController:fase');
     $this->get('/modalidade/{id:[0-9]+}', '\App\Controllers\JogoController:viewModalidade');
     $this->post('/modalidade/{id:[0-9]+}', '\App\Controllers\JogoController:modalidade');
+    $this->post('/finalizar/{id:[0-9]+}', '\App\Controllers\JogoController:finalizar');
 });
 
 
