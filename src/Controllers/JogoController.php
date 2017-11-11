@@ -306,11 +306,13 @@ class JogoController extends Base
     public function finalizar($request, $response, $args)
     {
         $id = (int) $args['id'];
+        $params = (object) $request->getParams();
         $jogo = $this->find($id);
         
+        $this->setValues($jogo, $params);
         $situacao = $this->findSituacao(2);
         $jogo->setSituacao($situacao);
-        $this->persist($jogo);
+        //$this->persist($jogo);
 
         $jogos = array();
         $this->avancarTimes($jogo, $jogos);
@@ -320,10 +322,45 @@ class JogoController extends Base
         return $return;
     }
 
-    private function avancarTimes($jogo, &$jogos) {
-        if($jogo->getOrdem() <= 4) {
-            
+    private function avancarTimes($jogo, &$jogos)
+    {
+        $placar1 = $jogo->getPlacar1();
+        $placar2 = $jogo->getPlacar2();
+        $vencedor = $jogo->getTime1();
+        $perdedor = $jogo->getTime2();
+
+        if (($placar2 > $placar1) || ($placar1 == $placar2 && $jogo->getPenalti2() > $jogo->getPenalti1())) {
+            $perdedor = $vencedor;
+            $vencedor = $jogo->getTime2();
         }
 
+        if ($jogo->getOrdem() <= 6) {
+            $ordem = '0';
+            switch ($jogo->getOrdem()) {
+                case 1:
+                case 2:
+                    $ordem = '5';
+                    break;
+                case 3:
+                case 4:
+                    $ordem = '6';
+                    break;
+                case 5:
+                case 6:
+                    $ordem = '7,8';
+                    break;
+            }
+
+            $sql = 'SELECT j FROM App\Models\Entity\Jogo j WHERE j.fase = ?1 AND j.ordem IN (' . $ordem . ') ORDER BY j.ordem ASC';
+        
+            $query = $this->getEntityManager()->createQuery($sql)
+                          ->setParameter(1, $jogo->getFase()->getId())
+                          ->getResult();
+
+            $values = array();
+            foreach ($query as $value) {
+                array_push($values, $value);
+            }
+        }
     }
 }
